@@ -112,22 +112,22 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 	</form>
 
 	<?php if (!empty($search_results)): ?>
-		<table>
-			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Category</th>
-				<th>Price</th>
-			</tr>
-			<?php foreach ($search_results as $result): ?>
-				<tr>
-					<td><?php echo $result['title']; ?></td>
-					<td><?php echo $result['description']; ?></td>
-					<td><?php echo $result['category']; ?></td>
-					<td><?php echo $result['price']; ?></td>
-				</tr>
-			<?php endforeach; ?>
-		</table>
+		<table style="margin:auto;">
+  <tr>
+    <th style="padding: 10px;">Name</th>
+    <th style="padding: 10px;">Description</th>
+    <th style="padding: 10px;">Category</th>
+    <th style="padding: 10px;">Price</th>
+  </tr>
+  <?php foreach ($search_results as $result): ?>
+    <tr>
+      <td style="padding: 10px;"><?php echo $result['title']; ?></td>
+      <td style="padding: 10px;"><?php echo $result['description']; ?></td>
+      <td style="padding: 10px;"><?php echo $result['category']; ?></td>
+      <td style="padding: 10px;"><?php echo $result['price']; ?></td>
+    </tr>
+  <?php endforeach; ?>
+</table>
 	<?php endif; ?>
 
 
