@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 	$price = floatval($_POST['price']);
 	
 
-	$insert_query = "INSERT INTO items (title, description, category, price, user_id, created_at) VALUES ('$title', '$description', '$category', $price, $userid, CURDATE())";
+	$insert_query = "INSERT INTO items (title, description, category, price, user_id, created_at) VALUES ('$title', '$description', '$category', $price, $userid, '$Date'')";
 	mysqli_query($con, $insert_query);
 
 	echo "Item added successfully.";
