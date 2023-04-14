@@ -77,9 +77,9 @@ $search_results = array();
 
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
-	$category = $_POST['category'];
+	$category = mysqli_real_escape_string($con, $_POST['category']);
 
-	$query = "SELECT * FROM items WHERE category = '$category'";
+	$query = "SELECT * FROM items WHERE category LIKE '%$category%'";
 	$result = mysqli_query($con, $query);
 
 	if (mysqli_num_rows($result) > 0) {
