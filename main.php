@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 
 	// Check if the user has already posted 3 items today
 	$Date = date('Y-m-d');
-	$userid = $user_data['id'];
+	$userid = $user_data['username'];
 	$posted = checkUserPostCount($Date, $userid, $con);
 
 	if($posted == '1'){
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 	$price = floatval($_POST['price']);
 	
 
-	$insert_query = "INSERT INTO items (title, description, category, price, user_id, created_at) VALUES ('$title', '$description', '$category', $price, $userid, '$Date'')";
+	$insert_query = "INSERT INTO items (title, description, category, price, user, created_at) VALUES ('$title', '$description', '$category', $price, '$userid', '$Date')";
 	mysqli_query($con, $insert_query);
 
 	echo "Item added successfully.";
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 			</tr>
 			<?php foreach ($search_results as $result): ?>
 				<tr>
-					<td><?php echo $result['name']; ?></td>
+					<td><?php echo $result['title']; ?></td>
 					<td><?php echo $result['description']; ?></td>
 					<td><?php echo $result['category']; ?></td>
 					<td><?php echo $result['price']; ?></td>

@@ -33,7 +33,7 @@ function checkUsernameEmailExist($username, $email, $con)
 function checkUserPostCount($date, $userid, $con){
 	// Check if the user has already posted 3 items today
 
-$count_query = "SELECT COUNT(*) FROM items WHERE user_id = '$userid' AND created_at = '$date'";
+$count_query = "SELECT COUNT(*) FROM items WHERE user = '$userid' AND created_at = '$date'";
 $count_result = mysqli_query($con, $count_query);
 $count = mysqli_fetch_array($count_result)[0];
 
