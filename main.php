@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 	$posted = checkUserPostCount($Date, $userid, $con);
 
 	if($posted == '1'){
-		echo "Sorry, you have already posted 3 items today.";
+		echo '<script>alert("Sorry, you have already posted 3 items today.");</script>';
 	}else if($posted == '0'){
 		$title = mysqli_real_escape_string($con, $_POST['title']);
 	$description = mysqli_real_escape_string($con, $_POST['description']);
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 	$insert_query = "INSERT INTO items (title, description, category, price, user, created_at) VALUES ('$title', '$description', '$category', $price, '$userid', '$Date')";
 	mysqli_query($con, $insert_query);
 
-	echo "Item added successfully.";
+	echo '<script>alert("Item added successfully.");</script>';
 	}
 	
 }
