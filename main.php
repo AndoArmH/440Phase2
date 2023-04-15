@@ -100,13 +100,30 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 	<title>Document</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
+<style>
+.logout-button {
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+</style>
 
 <body>
-	<a href="logout.php">Logout</a>
+<br><button class="logout-button" onclick="logout()">Logout</button>
+
+<script>
+function logout() {
+  window.location.href = 'logout.php';
+}
+</script>
 	<h2>Home Page</h2>
 	<br><br>
 
 	<form method="POST">
+		<h3>Search an Item for Sale</h3>
 		<input type="text" name="category" placeholder="Enter category">
 		<input type="submit" name="search" value="Search">
 	</form>
@@ -124,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
       <td style="padding: 10px;"><?php echo $result['title']; ?></td>
       <td style="padding: 10px;"><?php echo $result['description']; ?></td>
       <td style="padding: 10px;"><?php echo $result['category']; ?></td>
-      <td style="padding: 10px;"><?php echo $result['price']; ?></td>
+      <td style="padding: 10px;"><?php echo '$'.$result['price']; ?></td>
     </tr>
   <?php endforeach; ?>
 </table>
@@ -132,6 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 
 
 	<form method="POST">
+	<h3>Add an Item for Sale</h3>
 	<label for="title">Title:</label>
 	<input type="text" id="title" name="title"><br>
 
@@ -142,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 	<input type="text" id="category" name="category"><br>
 
 	<label for="price">Price:</label>
-	<input type="number" id="price" name="price" step="0.01"><br>
+	<input type="number" id="price" name="price" step="0.01"><br><br>
 
 	<input type="submit" name="add" value="add">
 </form>
