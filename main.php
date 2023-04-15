@@ -41,7 +41,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 	}
 	
 }
+// review 
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['review'])) {
+	$userid = $user_data['username'];
+	$itemid = mysqli_real_escape_string($con, $_POST['item_id']);
+	$rating = mysqli_real_escape_string($con, $_POST['rating']);
+	$description = mysqli_real_escape_string($con, $_POST['description']); 
 
+	$query = "SELECT * FROM items WHERE id = $itemid AND user = '$userid'";
+	$result = mysqli_query($con, $query);
+	if (mysqli_num_rows($result) > 0) {
+		echo '<script>alert("Sorry, you cannot review your own item.");</script>';
+	} else {
+		$insert_query = "INSERT INTO reviews (item_id, id, rating, description) VALUES ($itemid, '$userid', $rating, '$description')";
+		mysqli_query($con, $insert_query);
+
+		echo '<script>alert("Review added successfully.");</script>';
+	}
+}
 
 //Searching for item by category
 $search_results = array();
@@ -63,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 		}
 	}
 }
+
 
 ?>
 
@@ -98,20 +116,39 @@ function logout() {
 
 	<?php if (!empty($search_results)): ?>
 		<table style="margin:auto;">
-  <tr>
+
+<tr>
     <th style="padding: 10px;">Name</th>
     <th style="padding: 10px;">Description</th>
     <th style="padding: 10px;">Category</th>
     <th style="padding: 10px;">Price</th>
+    <th style="padding: 10px;">Review</th> 
+</tr>
+
+
+<?php foreach ($search_results as $result): ?>
+  <tr>
+    <td style="padding: 10px;"><?php echo $result['title']; ?></td>
+    <td style="padding: 10px;"><?php echo $result['description']; ?></td>
+    <td style="padding: 10px;"><?php echo $result['category']; ?></td>
+    <td style="padding: 10px;"><?php echo '$'.$result['price']; ?></td>
+    <td style="padding: 10px;">
+      <form method="POST">
+        <select name="rating">
+          <option value="1">Poor</option>
+          <option value="2">Fair</option>
+          <option value="3">Good</option>
+          <option value="4">Excellent</option>
+        </select>
+        <input type="hidden" name="item_id" value="<?php echo $result['id']; ?>">
+        <input type="text" name="description" placeholder="Enter a description"> 
+        <input type="submit" name="review" value="Submit Review">
+      </form>
+    </td>
   </tr>
-  <?php foreach ($search_results as $result): ?>
-    <tr>
-      <td style="padding: 10px;"><?php echo $result['title']; ?></td>
-      <td style="padding: 10px;"><?php echo $result['description']; ?></td>
-      <td style="padding: 10px;"><?php echo $result['category']; ?></td>
-      <td style="padding: 10px;"><?php echo '$'.$result['price']; ?></td>
-    </tr>
-  <?php endforeach; ?>
+<?php endforeach; ?>
+
+
 </table>
 	<?php endif; ?>
 

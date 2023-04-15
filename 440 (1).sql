@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 15, 2023 at 08:45 PM
+-- Generation Time: Apr 15, 2023 at 08:42 PM
 -- Server version: 8.0.31
 -- PHP Version: 8.0.26
 
@@ -37,7 +37,17 @@ CREATE TABLE IF NOT EXISTS `items` (
   `user` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `items`
+--
+
+INSERT INTO `items` (`id`, `title`, `description`, `category`, `price`, `user`, `created_at`) VALUES
+(1, 'smartphone', 'f sdfsd', 'electronics', '1112.00', 'newuser', '2023-04-15'),
+(2, 'smartphone2', 'kdjsfjsfkj', 'apple', '1000.00', 'newuser', '2023-04-15'),
+(3, 'smartphone', 'dsfkjhskjd', 'electronics', '1111.00', 'newuser', '2023-04-15'),
+(4, 'Phone', 'sadikjasd ksjfd skdj', 'apple', '12344.00', 'Testing', '2023-04-15');
 
 -- --------------------------------------------------------
 
@@ -53,6 +63,17 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   `description` text COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`item_id`, `id`, `rating`, `description`) VALUES
+(1, 'newuser', '1', 'this sucked'),
+(2, 'newuser', '4', 'Amazing'),
+(1, 'newuser', '2', 'it was Ok'),
+(2, 'newuser', '3', 'pretty good'),
+(1, 'Testing', '3', 'ddfsfsfsdfsd fsdfsdfsdf');
+
 -- --------------------------------------------------------
 
 --
@@ -67,6 +88,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `lastName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`username`, `password`, `firstName`, `lastName`, `email`) VALUES
+('newuser', 'b8cabfa6558effaa7e36230b6c537f1e39758397dd21ca70435099f93f62213f06d90377da1f7c6c1956346ef706923e83c8e53ffa05ba4fc8b2383f726a6dc3', 'testname', 'testlast', 'test@test.com'),
+('Testing', 'b8cabfa6558effaa7e36230b6c537f1e39758397dd21ca70435099f93f62213f06d90377da1f7c6c1956346ef706923e83c8e53ffa05ba4fc8b2383f726a6dc3', 'newtest', 'newtestlast', 'email@email.com');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
