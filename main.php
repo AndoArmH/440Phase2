@@ -17,31 +17,6 @@ date_default_timezone_set('America/Los_Angeles');
 $date = date('Y-m-d h:i:s', time());
 echo "$date";
 
-// if ($_SERVER['REQUEST_METHOD'] == "POST") {
-// 	$users_json = file_get_contents('init.json');
-// 	$decoded_json = json_decode($users_json, true);
-// 	$users = $decoded_json['tuples'];
-
-// 	mysqli_query($con, "DELETE FROM user");
-
-// 	foreach($users as $user) {
-// 		$username = $user['username'];
-// 		$password = $user['password'];
-// 		$firstName = $user['firstName'];
-// 		$lastName = $user['lastName'];
-// 		$email = $user['email'];
-
-// 		$salted = "dfjhg584967y98ehg75498y" . $password . "fdsjghiuo54jyi";
-// 		$hashed = hash('sha512', $salted);
-// 		$query = "insert into user (username,password,firstName,lastName,email) values ('$username','$hashed','$firstName','$lastName','$email')";
-// 		//save into db
-// 		mysqli_query($con, $query);
-// 	}
-
-// 	echo "Database reinitialized";
-// 	die;
-// }
-
 // Handle the form submission when a user adds an item
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 
@@ -101,14 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <style>
-.logout-button {
-  background-color: #f00;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
+
 </style>
 
 <body>
