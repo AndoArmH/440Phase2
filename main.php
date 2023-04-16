@@ -229,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 				body: 'id=' + encodeURIComponent(id)
 			}).then((res) => res.text()).then((data) => {
 				let arr = JSON.parse(data);
-				console.log(arr)
+				// console.log(arr)
 
 				let str = ""
 				str += arr.length == 0 ? "No Reviews" : "Reviews:"
