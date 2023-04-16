@@ -13,6 +13,26 @@ $user_data = check_login($con);
 //function that will take user data and check if theyre logged in
 //$con is connection to database
 
+if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['id'])) {
+	$id = $_POST['id'];
+	$revs = mysqli_query($con, "SELECT * FROM reviews WHERE item_id = " . $id);
+
+	if ($revs) {
+		// Fetch the rows from the result set and store them in an array
+		$rows = array();
+		while ($row = mysqli_fetch_assoc($revs)) {
+			$rows[] = $row;
+		}
+
+		// Convert the array to a JSON string
+		$json = json_encode($rows);
+
+		// Output the JSON string
+		echo $json;
+		die;
+	}
+}
+
 date_default_timezone_set('America/Los_Angeles');
 $date = date('Y-m-d h:i:s', time());
 echo "$date";
@@ -25,28 +45,27 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 	$userid = $user_data['username'];
 	$posted = checkUserPostCount($Date, $userid, $con);
 
-	if($posted == '1'){
+	if ($posted == '1') {
 		echo '<script>alert("Sorry, you have already posted 3 items today.");</script>';
-	}else if($posted == '0'){
+	} else if ($posted == '0') {
 		$title = mysqli_real_escape_string($con, $_POST['title']);
-	$description = mysqli_real_escape_string($con, $_POST['description']);
-	$category = mysqli_real_escape_string($con, $_POST['category']);
-	$price = floatval($_POST['price']);
-	
+		$description = mysqli_real_escape_string($con, $_POST['description']);
+		$category = mysqli_real_escape_string($con, $_POST['category']);
+		$price = floatval($_POST['price']);
 
-	$insert_query = "INSERT INTO items (title, description, category, price, user, created_at) VALUES ('$title', '$description', '$category', $price, '$userid', '$Date')";
-	mysqli_query($con, $insert_query);
 
-	echo '<script>alert("Item added successfully.");</script>';
+		$insert_query = "INSERT INTO items (title, description, category, price, user, created_at) VALUES ('$title', '$description', '$category', $price, '$userid', '$Date')";
+		mysqli_query($con, $insert_query);
+
+		echo '<script>alert("Item added successfully.");</script>';
 	}
-	
 }
 // review 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['review'])) {
 	$userid = $user_data['username'];
 	$itemid = mysqli_real_escape_string($con, $_POST['item_id']);
 	$rating = mysqli_real_escape_string($con, $_POST['rating']);
-	$description = mysqli_real_escape_string($con, $_POST['description']); 
+	$description = mysqli_real_escape_string($con, $_POST['description']);
 
 	$query = "SELECT * FROM items WHERE id = $itemid AND user = '$userid'";
 	$result = mysqli_query($con, $query);
@@ -98,13 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 </style>
 
 <body>
-<br><button class="logout-button" onclick="logout()">Logout</button>
+	<br><button class="logout-button" onclick="logout()">Logout</button>
 
-<script>
-function logout() {
-  window.location.href = 'logout.php';
-}
-</script>
 	<h2>Home Page</h2>
 	<br><br>
 
@@ -114,61 +128,129 @@ function logout() {
 		<input type="submit" name="search" value="Search">
 	</form>
 
-	<?php if (!empty($search_results)): ?>
+	<?php if (!empty($search_results)) : ?>
 		<table style="margin:auto;">
 
-<tr>
-    <th style="padding: 10px;">Name</th>
-    <th style="padding: 10px;">Description</th>
-    <th style="padding: 10px;">Category</th>
-    <th style="padding: 10px;">Price</th>
-    <th style="padding: 10px;">Review</th> 
-</tr>
+			<tr>
+				<th style="padding: 10px;">Name</th>
+				<th style="padding: 10px;">Description</th>
+				<th style="padding: 10px;">Category</th>
+				<th style="padding: 10px;">Price</th>
+				<th style="padding: 10px;">User</th>
+				<th style="padding: 10px;">Review</th>
+			</tr>
 
 
-<?php foreach ($search_results as $result): ?>
-  <tr>
-    <td style="padding: 10px;"><?php echo $result['title']; ?></td>
-    <td style="padding: 10px;"><?php echo $result['description']; ?></td>
-    <td style="padding: 10px;"><?php echo $result['category']; ?></td>
-    <td style="padding: 10px;"><?php echo '$'.$result['price']; ?></td>
-    <td style="padding: 10px;">
-      <form method="POST">
-        <select name="rating">
-          <option value="1">Poor</option>
-          <option value="2">Fair</option>
-          <option value="3">Good</option>
-          <option value="4">Excellent</option>
-        </select>
-        <input type="hidden" name="item_id" value="<?php echo $result['id']; ?>">
-        <input type="text" name="description" placeholder="Enter a description"> 
-        <input type="submit" name="review" value="Submit Review">
-      </form>
-    </td>
-  </tr>
-<?php endforeach; ?>
+			<?php foreach ($search_results as $result) : ?>
+				<tr class="row" id="<?php echo $result['id'] ?>" onclick="loadReviews(<?php echo $result['id'] ?>)">
+					<td style="padding: 10px;"><?php echo $result['title']; ?></td>
+					<td style="padding: 10px;"><?php echo $result['description']; ?></td>
+					<td style="padding: 10px;"><?php echo $result['category']; ?></td>
+					<td style="padding: 10px;"><?php echo '$' . $result['price']; ?></td>
+					<td style="padding: 10px;"><?php echo $result['user']; ?></td>
+					<td style="padding: 10px;">
+						<form method="POST">
+							<select name="rating">
+								<option value="1">Poor</option>
+								<option value="2">Fair</option>
+								<option value="3">Good</option>
+								<option value="4">Excellent</option>
+							</select>
+							<input type="hidden" name="item_id" value="<?php echo $result['id']; ?>">
+							<input type="text" name="description" placeholder="Enter a description">
+							<input type="submit" name="review" value="Submit Review">
+						</form>
+					</td>
 
+				</tr>
+			<?php endforeach; ?>
 
-</table>
+		</table>
 	<?php endif; ?>
 
-
 	<form method="POST">
-	<h3>Add an Item for Sale</h3>
-	<label for="title">Title:</label>
-	<input type="text" id="title" name="title"><br>
+		<h3>Add an Item for Sale</h3>
+		<label for="title">Title:</label>
+		<input type="text" id="title" name="title"><br>
 
-	<label for="description">Description:</label>
-	<textarea id="description" name="description"></textarea><br>
+		<label for="description">Description:</label>
+		<textarea id="description" name="description"></textarea><br>
 
-	<label for="category">Category:</label>
-	<input type="text" id="category" name="category"><br>
+		<label for="category">Category:</label>
+		<input type="text" id="category" name="category"><br>
 
-	<label for="price">Price:</label>
-	<input type="number" id="price" name="price" step="0.01"><br><br>
+		<label for="price">Price:</label>
+		<input type="number" id="price" name="price" step="0.01"><br><br>
 
-	<input type="submit" name="add" value="add">
-</form>
+		<input type="submit" name="add" value="add">
+	</form>
+
+	<script>
+		function logout() {
+			window.location.href = 'logout.php';
+		}
+
+		function rating(n) {
+			switch (n) {
+				case '1':
+					return 'Poor'
+				case '2':
+					return 'Fair'
+				case '3':
+					return 'Good'
+				case '4':
+					return 'Excellent'
+			}
+		}
+
+		function loadReviews(id) {
+			fetch('main.php', {
+				method: 'POST',
+				headers: {
+					"Content-Type": 'application/x-www-form-urlencoded'
+				},
+				body: 'id=' + encodeURIComponent(id)
+			}).then((res) => res.text()).then((data) => {
+				let arr = JSON.parse(data);
+				console.log(arr)
+				let parent = document.getElementById(id);
+				let ele = document.getElementById("reviews")
+				if (ele) ele.remove();
+
+				let newEl = document.createElement("div");
+				newEl.id = "reviews"
+				newEl.classList.add('reviews')
+
+				let str = ""
+
+				str += arr.length == 0 ? "No Reviews" : "Reviews:"
+
+				for (let i = 0; i < arr.length; i++) {
+					let el = arr[i];
+
+					str +=
+						`
+					<div class="review">
+		<div>
+			User: ${el['id']}
+		</div>
+		<div>
+			Rating: ${rating(el['rating'])}
+		</div>
+		<div>
+			\"${el['description']}\"
+		</div>
+	</div>
+					`
+
+				}
+
+				newEl.innerHTML = str;
+				parent.insertAdjacentHTML("afterend", newEl.outerHTML);
+			})
+		}
+	</script>
+
 </body>
 
 </html>

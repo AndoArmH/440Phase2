@@ -67,3 +67,28 @@ body {
 		border-radius: 5px;
 		cursor: pointer;
 	}
+
+	.row:hover {
+		background-color: rgb(114, 114, 114);
+		border: 2px solid;
+	}
+
+	.reviews {
+		border: 2px, solid;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 5px
+	}
+
+	.review {
+		border: 2px solid white;
+		height: 100px;
+		width: 150px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		gap: 5px;
+	}
