@@ -161,7 +161,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 							<input type="submit" name="review" value="Submit Review">
 						</form>
 					</td>
-
 				</tr>
 			<?php endforeach; ?>
 
@@ -191,15 +190,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 		}
 
 		function rating(n) {
-			switch (n) {
-				case '1':
-					return 'Poor'
-				case '2':
-					return 'Fair'
-				case '3':
-					return 'Good'
-				case '4':
-					return 'Excellent'
+			switch(n) {
+				case '1': return 'Poor' 
+				case '2': return 'Fair' 
+				case '3': return 'Good' 
+				case '4': return 'Excellent' 
 			}
 		}
 
@@ -215,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 				console.log(arr)
 				let parent = document.getElementById(id);
 				let ele = document.getElementById("reviews")
-				if (ele) ele.remove();
+				if(ele) ele.remove();
 
 				let newEl = document.createElement("div");
 				newEl.id = "reviews"
@@ -228,8 +223,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 				for (let i = 0; i < arr.length; i++) {
 					let el = arr[i];
 
-					str +=
-						`
+					str += 
+					`
 					<div class="review">
 		<div>
 			User: ${el['id']}
@@ -242,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 		</div>
 	</div>
 					`
-
+					
 				}
 
 				newEl.innerHTML = str;
