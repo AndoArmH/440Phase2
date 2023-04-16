@@ -73,11 +73,15 @@ body {
 		border: 2px solid;
 	}
 
-	.reviews {
+	#reviews {
+		position: absolute;
+		background-color: rgb(0, 0, 0);
 		border: 2px, solid;
-		display: flex;
+		padding: 10px;
+		display: none;
 		justify-content: center;
 		align-items: center;
+		flex-wrap: wrap;
 		gap: 5px
 	}
 

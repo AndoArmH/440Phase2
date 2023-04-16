@@ -44,3 +44,18 @@ if ($count >= 3) {
 	return 0;
 }
 }
+
+function checkUserReviewCount($date, $userid, $con){
+	// Check if the user has already posted 3 items today
+
+$count_query = "SELECT COUNT(*) FROM reviews WHERE id = '$userid' AND created_at = '$date'";
+$count_result = mysqli_query($con, $count_query);
+$count = mysqli_fetch_array($count_result)[0];
+
+if ($count >= 3) {
+	//posted 3 times
+	return 1;
+}else{
+	return 0;
+}
+}

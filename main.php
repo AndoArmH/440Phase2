@@ -11,7 +11,7 @@ include("functions.php");
 
 $user_data = check_login($con);
 //function that will take user data and check if theyre logged in
-//$con is connection to database
+//$con is connection to database;
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['id'])) {
 	$id = $_POST['id'];
@@ -40,52 +40,65 @@ echo "$date";
 // Handle the form submission when a user adds an item
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['add'])) {
 
-	// Check if the user has already posted 3 items today
-	$Date = date('Y-m-d');
-	$userid = $user_data['username'];
-	$posted = checkUserPostCount($Date, $userid, $con);
+	if (!empty($_POST['title']) && !empty($_POST['description']) && !empty($_POST['category']) && !empty($_POST['price'])) {
+		$Date = date('Y-m-d');
+		$userid = $user_data['username'];
+		$posted = checkUserPostCount($Date, $userid, $con);
 
-	if ($posted == '1') {
-		echo '<script>alert("Sorry, you have already posted 3 items today.");</script>';
-	} else if ($posted == '0') {
-		$title = mysqli_real_escape_string($con, $_POST['title']);
-		$description = mysqli_real_escape_string($con, $_POST['description']);
-		$category = mysqli_real_escape_string($con, $_POST['category']);
-		$price = floatval($_POST['price']);
+		if ($posted == '1') {
+			echo '<script>alert("Sorry, you have already posted 3 items today.");</script>';
+		} else if ($posted == '0') {
+			$title = mysqli_real_escape_string($con, $_POST['title']);
+			$description = mysqli_real_escape_string($con, $_POST['description']);
+			$category = mysqli_real_escape_string($con, $_POST['category']);
+			$price = floatval($_POST['price']);
 
+			$insert_query = "INSERT INTO items (title, description, category, price, user, created_at) VALUES ('$title', '$description', '$category', $price, '$userid', '$Date')";
+			mysqli_query($con, $insert_query);
 
-		$insert_query = "INSERT INTO items (title, description, category, price, user, created_at) VALUES ('$title', '$description', '$category', $price, '$userid', '$Date')";
-		mysqli_query($con, $insert_query);
-
-		echo '<script>alert("Item added successfully.");</script>';
+			echo '<script>alert("Item added successfully.");</script>';
+		}
+	} else {
+		echo '<script>alert("ERROR: Fill All Fields");</script>';
 	}
 }
 // review 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['review'])) {
-	$userid = $user_data['username'];
-	$itemid = mysqli_real_escape_string($con, $_POST['item_id']);
-	$rating = mysqli_real_escape_string($con, $_POST['rating']);
-	$description = mysqli_real_escape_string($con, $_POST['description']);
 
-	$query = "SELECT * FROM items WHERE id = $itemid AND user = '$userid'";
-	$result = mysqli_query($con, $query);
-	if (mysqli_num_rows($result) > 0) {
-		echo '<script>alert("Sorry, you cannot review your own item.");</script>';
+	if (!empty($_POST['description'])) {
+		$Date = date('Y-m-d');
+		$userid = $user_data['username'];
+		$posted = checkUserReviewCount($Date, $userid, $con);
+
+		if ($posted == '1') {
+			echo '<script>alert("Sorry, you have already reviewed 3 items today.");</script>';
+		} else if ($posted == '0') {
+			$userid = $user_data['username'];
+			$itemid = mysqli_real_escape_string($con, $_POST['item_id']);
+			$rating = mysqli_real_escape_string($con, $_POST['rating']);
+			$description = mysqli_real_escape_string($con, $_POST['description']);
+
+			$query = "SELECT * FROM items WHERE id = $itemid AND user = '$userid'";
+			$result = mysqli_query($con, $query);
+			if (mysqli_num_rows($result) > 0) {
+				echo '<script>alert("Sorry, you cannot review your own item.");</script>';
+			} else {
+				$insert_query = "INSERT INTO reviews (item_id, id, rating, description, created_at) VALUES ($itemid, '$userid', $rating, '$description','$Date')";
+				mysqli_query($con, $insert_query);
+
+				echo '<script>alert("Review added successfully.");</script>';
+			}
+		}
 	} else {
-		$insert_query = "INSERT INTO reviews (item_id, id, rating, description) VALUES ($itemid, '$userid', $rating, '$description')";
-		mysqli_query($con, $insert_query);
-
-		echo '<script>alert("Review added successfully.");</script>';
+		echo '<script>alert("ERROR: Fill All Fields");</script>';
 	}
 }
 
 //Searching for item by category
 $search_results = array();
-
 //check if something has been posted with tag 'search', apply to variable category
 //query search for DB items where category is the same as what the user entered
 //if theres more than 1 result, display in the html by sending it to search_results array
-
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 	$category = mysqli_real_escape_string($con, $_POST['category']);
@@ -99,8 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 		}
 	}
 }
-
-
 ?>
 
 <html lang="en">
@@ -121,6 +132,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 
 	<h2>Home Page</h2>
 	<br><br>
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+		crossorigin="anonymous"></script>
+
+	<div id="reviews">
+
+	</div>
 
 	<form method="POST">
 		<h3>Search an Item for Sale</h3>
@@ -140,9 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 				<th style="padding: 10px;">Review</th>
 			</tr>
 
-
 			<?php foreach ($search_results as $result) : ?>
-				<tr class="row" id="<?php echo $result['id'] ?>" onclick="loadReviews(<?php echo $result['id'] ?>)">
+				<tr class="row" id="<?php echo $result['id'] ?>" onclick="">
 					<td style="padding: 10px;"><?php echo $result['title']; ?></td>
 					<td style="padding: 10px;"><?php echo $result['description']; ?></td>
 					<td style="padding: 10px;"><?php echo $result['category']; ?></td>
@@ -185,20 +201,26 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 	</form>
 
 	<script>
+		let reviews = document.getElementById('reviews');
+
 		function logout() {
 			window.location.href = 'logout.php';
 		}
 
 		function rating(n) {
-			switch(n) {
-				case '1': return 'Poor' 
-				case '2': return 'Fair' 
-				case '3': return 'Good' 
-				case '4': return 'Excellent' 
+			switch (n) {
+				case '1':
+					return 'Poor'
+				case '2':
+					return 'Fair'
+				case '3':
+					return 'Good'
+				case '4':
+					return 'Excellent'
 			}
 		}
 
-		function loadReviews(id) {
+		function loadReviews(event, id) {
 			fetch('main.php', {
 				method: 'POST',
 				headers: {
@@ -208,23 +230,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 			}).then((res) => res.text()).then((data) => {
 				let arr = JSON.parse(data);
 				console.log(arr)
-				let parent = document.getElementById(id);
-				let ele = document.getElementById("reviews")
-				if(ele) ele.remove();
-
-				let newEl = document.createElement("div");
-				newEl.id = "reviews"
-				newEl.classList.add('reviews')
 
 				let str = ""
-
 				str += arr.length == 0 ? "No Reviews" : "Reviews:"
 
 				for (let i = 0; i < arr.length; i++) {
 					let el = arr[i];
-
-					str += 
-					`
+					str +=
+						`
 					<div class="review">
 		<div>
 			User: ${el['id']}
@@ -237,13 +250,27 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 		</div>
 	</div>
 					`
-					
 				}
 
-				newEl.innerHTML = str;
-				parent.insertAdjacentHTML("afterend", newEl.outerHTML);
+				reviews.innerHTML = str;
+				reviews.style.display = 'flex'
+				reviews.style.top = `${event.pageY - 40}px`;
+				reviews.style.left = `0px`;
 			})
 		}
+
+		$('form').on('click', function(e) {
+			e.stopPropagation()
+		})
+
+		$('.row').on("click", function(e) {
+			loadReviews(e, this.id)
+		})
+
+		document.addEventListener("click", function(e) {
+			if (!e['keep'])
+				reviews.style.display = 'none';
+		})
 	</script>
 
 </body>

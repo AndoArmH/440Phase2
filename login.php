@@ -103,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		`item_id` int NOT NULL,
 		`id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
 		`rating` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-		`description` text COLLATE utf8mb4_general_ci NOT NULL
+		`description` text COLLATE utf8mb4_general_ci NOT NULL,
+		`created_at` date NOT NULL
 	) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
 	foreach ($reviews as $r) {
@@ -111,9 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		$id = $r['id'];
 		$rating = $r['rating'];
 		$description = $r['description'];
+		$created_at = $r['created_at'];
 
-		$query = "insert into reviews (item_id,id,rating,description) 
-		values ('$item_id','$id','$rating','$description')";
+		$query = "insert into reviews (item_id,id,rating,description,created_at) 
+		values ('$item_id','$id','$rating','$description','$created_at')";
 		//save into db
 		mysqli_query($con, $query);
 	}
@@ -134,6 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
+
+
 
 	<div>
 		<form method="post">
