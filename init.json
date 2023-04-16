@@ -1,5 +1,5 @@
 {
-  "tuples": [
+  "users": [
     {
       "username": "John124",
       "password": "souls",
@@ -34,6 +34,87 @@
       "firstName": "me",
       "lastName": "irl",
       "email": "nodebetter@gmail.com"
+    }
+  ],
+	
+  "items": [
+    {
+			"id": 1,
+      "title": "Smartphone",
+      "description": "This is the new iPhone X",
+      "category": "electronic, cellphone, apple",
+      "price": 1000.00,
+      "user": "John124",
+      "created_at": "2023-04-14"
+    },
+    {
+			"id": 2,
+      "title": "pink motorola razr",
+      "description": "ICONIC relic of peak 2006",
+      "category": "electronic, peak",
+      "price": 2000.00,
+      "user": "Tethys69",
+      "created_at": "2023-04-14"
+    },
+    {
+			"id": 3,
+      "title": "Zenith",
+      "description": "Red made melee too strong",
+      "category": "melee, op",
+      "price": 9999.10,
+      "user": "thegoat88",
+      "created_at": "2023-04-14"
+    },
+    {
+			"id": 4,
+      "title": "Mucinex",
+      "description": "Somehow worse that Dayquil",
+      "category": "medicine",
+      "price": 15.99,
+      "user": "phpistrash",
+      "created_at": "2023-04-14"
+    },
+    {
+			"id": 5,
+      "title": "mcChicken",
+      "description": "The only food that hasnt fell off at mcDonalds",
+      "category": "food",
+      "price": 2.50,
+      "user": "John124",
+      "created_at": "2023-04-14"
+    }
+  ],
+	
+  "reviews": [
+    {
+      "item_id": 1,
+      "id": "phpistrash",
+      "rating": 1,
+      "description": "Not android lul"
+    },
+    {
+      "item_id": 2,
+      "id": "thegoat88",
+      "rating": 4,
+      "description": "Diner Dash goated"
+    },
+    {
+      "item_id": 3,
+      "id": "Tethys69",
+      "rating": 4,
+      "description": "Red plz buff ranger. Stop having it be bad"
+    },
+    {
+      "item_id": 4,
+      "id": "Duos111",
+      "rating": 2,
+      "description": "How tf are you $16??????"
+    },
+    {
+      "item_id": 2,
+      "id": "phpistrash",
+      "rating": 3,
+      "description": "^ nah Bejeweled >>> Diner Dash"
     }
   ]
 }
