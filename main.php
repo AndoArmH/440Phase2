@@ -139,6 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 
 	</div>
 
+	<div style="padding: 10px">
+		
 	<form method="POST">
 		<h3>Search an Item for Sale</h3>
 		<input type="text" name="category" placeholder="Enter category">
@@ -199,6 +201,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 
 		<input type="submit" name="add" value="add">
 	</form>
+	</div>
+
 
 	<script>
 		let reviews = document.getElementById('reviews');

@@ -85,6 +85,10 @@ body {
 		gap: 5px
 	}
 
+	/* #reviews:hover {
+		background-color: rgb(81, 81, 81);
+	} */
+
 	.review {
 		border: 2px solid white;
 		height: 100px;
