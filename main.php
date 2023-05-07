@@ -128,7 +128,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 </style>
 
 <body>
-	<br><button class="logout-button" onclick="logout()">Logout</button>
+	<br><button class="logout-button" onclick="logout()">Logout</button><br>
+	<a href="expensive.php">List the most expensive items by category</a><br>
+	<a href="user2items.php">List the users who posted at least two items by X & Y category</a><br>
+	<a href="3excellentGood.php">List excellent/good rated items by a given user</a><br>
+	<a href="4mostItems.php">List the users who posted the most number of items since 5/1/2020 </a><br>
+
 
 	<h2>Home Page</h2>
 	<br><br>
