@@ -133,10 +133,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 	<a href="user2items.php">List the users who posted at least two items by X & Y category</a><br>
 	<a href="3excellentGood.php">List excellent/good rated items by a given user</a><br>
 	<a href="4mostItems.php">List the users who posted the most number of items since 5/1/2020 </a><br>
+	<a href="5favorited.php">List the other users who are favorited by both users X, and Y </a><br>
 	<a href="6noExcellent.php">List the users who never got an excellent rating on an item 3 times </a><br>
 	<a href="7noPoorReview.php">List the users who never gave a "poor" rating to an item </a><br>
 	<a href="8onlyPoorReview.php">List the users who posted some reviews, but each of them is "poor" </a><br>
-
+	<a href="9noPoorReviewsRec.php">List users with no "poor" reviewed items </a><br>
+	<a href="10excellentreviews.php">List user pair that have always gave each other "excellent" reviews </a><br>
+	
 
 
 
