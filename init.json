@@ -41,6 +41,13 @@
       "firstName": "Lemond",
       "lastName": "Wyatt",
       "email": "somth@gmail.com"
+    },
+    {
+      "username": "Aura6",
+      "password": "pass1111",
+      "firstName": "gg",
+      "lastName": "bridge",
+      "email": "sh@gmail.com"
     }
   ],
 	
@@ -89,6 +96,15 @@
       "price": 2.50,
       "user": "John124",
       "created_at": "2023-04-14"
+    },
+    {
+			"id": 5,
+      "title": "bread",
+      "description": "The only food",
+      "category": "food, struggle",
+      "price": 2.50,
+      "user": "Aura6",
+      "created_at": "2023-04-14"
     }
   ],
 	
@@ -125,6 +141,13 @@
       "item_id": 2,
       "id": "phpistrash",
       "rating": 3,
+      "description": "<-- nah Bejeweled >>> Diner Dash",
+      "created_at": "2023-04-14"
+    },
+    {
+      "item_id": 2,
+      "id": "Aura6",
+      "rating": 4,
       "description": "<-- nah Bejeweled >>> Diner Dash",
       "created_at": "2023-04-14"
     }

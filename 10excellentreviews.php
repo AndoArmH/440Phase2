@@ -9,31 +9,29 @@ if ($con->connect_error) {
   die("Connection failed: " . $con->connect_error);
 }
 
-$sql = "SELECT r.id, i.user
-        FROM reviews r
-        INNER JOIN items i ON r.item_id = i.id
-        WHERE r.rating = 4
-        GROUP BY r.id, i.user
-        HAVING COUNT(*) >= 2";
+$sql = "SELECT DISTINCT r1.id as userA, r2.id as userB
+FROM reviews r1
+JOIN reviews r2 ON r1.item_id = r2.item_id AND r1.id <> r2.id
+JOIN items i1 ON r1.item_id = i1.id
+JOIN items i2 ON r2.item_id = i2.id
+WHERE r1.rating = '4' AND r2.rating = '4'
+GROUP BY userA, userB
+HAVING COUNT(i1.id) = (SELECT COUNT(*) FROM items WHERE user = userA)
+  AND COUNT(i2.id) = (SELECT COUNT(*) FROM items WHERE user = userB)
+";
+
 
 $result = $con->query($sql);
 
+// Display results
 if ($result->num_rows > 0) {
-    $user_pairs = array();
-
-    while($row = $result->fetch_assoc()) {
-        $user1 = $row["id"];
-        $user2 = $row["user"];
-        $pair = array($user1, $user2);
-        
-        if (!in_array($pair, $user_pairs) && !in_array(array($user2, $user1), $user_pairs)) {
-            $user_pairs[] = $pair;
-
-        echo "User Pair: (" . $user1 . " , " . $user2 . ") <br>";
-    }
+  echo "<table><tr><th>User A</th><th>User B</th></tr>";
+  while($row = $result->fetch_assoc()) {
+    echo "<tr><td>".$row["userA"]."</td><td>".$row["userB"]."</td></tr>";
   }
+  echo "</table>";
 } else {
-    echo "No results found.";
+  echo "No results found";
 }
 
 $con->close();

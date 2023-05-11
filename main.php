@@ -139,10 +139,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['search'])) {
 	<a href="8onlyPoorReview.php">List the users who posted some reviews, but each of them is "poor" </a><br>
 	<a href="9noPoorReviewsRec.php">List users with no "poor" reviewed items </a><br>
 	<a href="10excellentreviews.php">List user pair that have always gave each other "excellent" reviews </a><br>
-	
-
-
-
 
 	<h2>Home Page</h2>
 	<br><br>
