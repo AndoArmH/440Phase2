@@ -20,9 +20,10 @@ if(isset($_POST['search'])) {
   // Get input value
   $username = $_POST['username'];
 
-  // Fetch items posted by user X, with rating of 4 or 5
-  $sql = "SELECT * FROM items JOIN reviews ON items.id = reviews.item_id WHERE items.user = '$username' AND reviews.rating IN (3, 4)";
-  $result = $con->query($sql);
+  // Fetch items posted by user X, with rating of 4 or 5 and not have any other ratings besides 4 or 5 by any other user
+$sql = "SELECT * FROM items JOIN reviews ON items.id = reviews.item_id WHERE items.user = '$username' AND reviews.rating IN (3, 4)
+AND NOT EXISTS (SELECT * FROM reviews WHERE item_id = items.id AND id != '$username' AND rating NOT IN (3, 4))";
+$result = $con->query($sql);
 
   // Display results
   if ($result->num_rows > 0) {
