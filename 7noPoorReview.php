@@ -1,20 +1,20 @@
 <?php
-// session is a variable that can be accessed from any page
-// superglobal variable
-session_start();
 
-// we put user id on session on every page to make sure
-// its the same user on every page and theyre logged in
+session_start();
 
 include("connection.php");
 include("functions.php");
 
 $user_data = check_login($con);
-// function that will take user data and check if theyre logged in
-// $con is connection to database;
 
-// SQL query to select users who never gave a "1" rating review to an item
-$sql = "SELECT DISTINCT id FROM reviews WHERE rating <> '1'";
+
+$sql = "SELECT DISTINCT id
+        FROM reviews
+        WHERE id NOT IN (
+          SELECT id
+          FROM reviews
+          WHERE rating = '1'
+        )";
 
 $result = $con->query($sql);
 
